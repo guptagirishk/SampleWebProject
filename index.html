@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Sample web project by guptagirishk</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Sample web project</h1>
+      <h2 class="project-tagline">How to integrate log4j2 library in a Java web application</h2>
+      <a href="https://github.com/guptagirishk/SampleWebProject" class="btn">View on GitHub</a>
+      <a href="https://github.com/guptagirishk/SampleWebProject/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/guptagirishk/SampleWebProject/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h3>
+<a id="get-the-required-jar-files" class="anchor" href="#get-the-required-jar-files" aria-hidden="true"><span class="octicon octicon-link"></span></a>Get the required jar files</h3>
+
+<p>For a simple Java web application you would need following two jar files:</p>
+
+<ul>
+<li>log4j-api-2.5.jar </li>
+<li>log4j-core-2.5.jar</li>
+</ul>
+
+<p>I have used log4j2 version 2.5 which is latest available at this date. The files can be downloaded from Apache site <a href="http://logging.apache.org/log4j/2.x/download.html">http://logging.apache.org/log4j/2.x/download.html</a>. Once you unzip the downloaded file it would contain many more jars but they would be required for specific cases. For a simple java web application the above two would suffice. If you are using Maven, add the required artifacts. </p>
+
+<h3>
+<a id="add-the-jars-to-your-project" class="anchor" href="#add-the-jars-to-your-project" aria-hidden="true"><span class="octicon octicon-link"></span></a>Add the jars to your project</h3>
+
+<p>If you are using Eclipse put the jar files in /WEB-INF/lib directory or add the jars in project's classpath.</p>
+
+<h3>
+<a id="log4j2-configuration" class="anchor" href="#log4j2-configuration" aria-hidden="true"><span class="octicon octicon-link"></span></a>log4j2 configuration</h3>
+
+<p>log4j2 needs to be configured. You can either use a configuration file or define runtime configuration. We will use a configuration file here. The file should be named as log4j2.xml and should be kept in WEB-INF/classes directory. Following is a sample log4j2.xml file:</p>
+
+<pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;configuration status="WARN"&gt;
+  &lt;appenders&gt;
+    &lt;Console name="Console" target="SYSTEM_OUT"&gt;
+      &lt;PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/&gt;
+    &lt;/Console&gt;
+
+    &lt;File name="MyFile" fileName="/logs/app.log"&gt;
+        &lt;PatternLayout pattern="%d{yyyy-mm-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/&gt;
+    &lt;/File&gt;             
+  &lt;/appenders&gt;
+
+  &lt;loggers&gt;     
+    &lt;root level="debug"&gt;
+      &lt;appender-ref ref="Console" level="info"/&gt;
+       &lt;appender-ref ref="MyFile" level="info"/&gt;
+    &lt;/root&gt;    
+  &lt;/loggers&gt;
+&lt;/configuration&gt;  
+</code></pre>
+
+<p>Notice the fileName which refers to the file in which logs would be written. Make sure that required permissions are given for this file.</p>
+
+<h3>
+<a id="configuration-in-webxml-not-mandatory-but-can-be-useful" class="anchor" href="#configuration-in-webxml-not-mandatory-but-can-be-useful" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configuration in web.xml (not mandatory, but can be useful)</h3>
+
+<p>Add the following in web.xml file</p>
+
+<pre lang="&lt;context-param&gt;"><code>        &lt;param-name&gt;log4jConfiguration&lt;/param-name&gt;
+        &lt;param-value&gt;/WEB-INF/classes/log4j2.xml&lt;/param-value&gt;
+    &lt;/context-param&gt;
+</code></pre>
+
+<h3>
+<a id="use-the-logger-class" class="anchor" href="#use-the-logger-class" aria-hidden="true"><span class="octicon octicon-link"></span></a>Use the logger class</h3>
+
+<p>Now you should be able to use log4j2. 
+Import the following in your class</p>
+
+<pre><code>import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+</code></pre>
+
+<p>Get instance of logger</p>
+
+<pre><code>private static final Logger logger = LogManager.getLogger("YOUR_CLASS_NAME");
+</code></pre>
+
+<p>And use different methods based on situation:</p>
+
+<pre><code>logger.info("Entered in doGet method");
+logger.error("Could not close db connection.");
+</code></pre>
+
+<p>That's it. Thanks for reading. Suggestions are most welcome!</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/guptagirishk/SampleWebProject">Sample web project</a> is maintained by <a href="https://github.com/guptagirishk">guptagirishk</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
